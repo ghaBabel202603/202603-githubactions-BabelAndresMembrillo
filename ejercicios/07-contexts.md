@@ -1,65 +1,82 @@
 ## Objetivo
-Trabajar con diferentes contextos disponibles durante las ejecuciones del flujo de trabajo.
 
-## Apartados
+Explorar el uso de **contextos en GitHub Actions**, especialmente: - el
+contexto **github** - variables de repositorio (**vars**) - parámetros
+de entrada (**inputs**) en ejecuciones manuales.
 
-### Uso de contextos de github & vars. Tareas:
+------------------------------------------------------------------------
 
-1. Crear un archivo llamado 07-contexts.yaml en la carpeta .github/workflows en la raíz del repositorio. Los datos del workflow deben ser los siguientes:
-   - nombre: 07 - Contexts. 
-   - desencadentes:
-      - push
-      - workflow_dispatch
-   - Trabajos:
-     - **echo-data**, debería ejecutarse en ubuntu-latest y con dos steps:
-       - *"Show Info"*, que imprime las siguientes líneas que contienen información del contexto de github (consejo: usar un script de varias líneas con varios comandos de eco):
-          ```shell
-          "Nombre del evento: <recupere el nombre del evento aquí>"
-          "Ref: <recupere la referencia aquí>"
-          "SHA: <recupere el sha de commit aquí>"
-          "Actor: <recupere el nombre del actor aquí>"
-          "Flujo de trabajo: <recupere el nombre del workflow aquí>"
-          "ID de ejecución: <recupere el ID de ejecución aquí>"
-          "Número de ejecución: <recupere el número de ejecución aquí>"
-          ```
-       - *"Retrieve Variable"*, que imprime una sola línea que contiene el valor de una variable del repositorio denominada MY_VAR.
+## Tareas
 
-2. Crear una variable de repositorio denominada MY_VAR. Consultar la sección de TIPS a continuación para saber paso a paso cómo crear variables de repositorio. Establezcer el valor de esta variable en 'hola mundo'.
-3. Confirmar los cambios y subir (push) el código en la rama main. Inspeccionar el resultado de la ejecución del workflow. 
+### 1. Crear el workflow
 
-### Uso de contextos no válidos en GitHub Actions. Tareas:
+Crear un archivo llamado **07-contexts.yaml** en la carpeta
+**.github/workflows** en la raíz del repositorio.
 
-1. Añadir una nueva linea de clave-valor al yaml, "run-name". Ésta se indica n el nivel superior, justo entre 'name' y 'on'. El run-name permite definir el nombre de la ejecución del flujo de trabajo que aparece en la interfaz de usuario. Establecer el valor de run-name en My custom workflow run name - ${{ runner.os }}. 
-2. Confirmar los cambios y enviar el código. Tómese un tiempo para inspeccionar el resultado de la ejecución del flujo de trabajo. ¿Qué mensaje de error apareció?
+El workflow debe tener:
 
-### Uso de contexto 'inputs' en GitHub Actions. Tareas:
+-   **nombre:** 07 - Contexts
+-   **run-name:** `07 - Contexts | DEBUG - ${{ inputs.debug }}`
+-   **desencadenantes:**
+    -   `push`
+    -   `workflow_dispatch` con un **input** llamado `debug`, de tipo
+        booleano y valor por defecto `false`.
+-   **job:** `echo-data`
+    -   se ejecuta en **ubuntu-latest**
+    -   tiene dos steps:
 
-1. Reemplace el run-name con 07 - Contexts | DEBUG - ${{ inputs.debug }}
-2. Agregue una configuración al evento "workflow_dispatch" para que pueda definir un parámetro de entrada para el workflow. Para hacer esto, agregue un nuevo valor 'input' al desdencandenate workflow_dispatch. El parámetro debe llamarse debug, tener un tipo booleano y un valor predeterminado falso. Si no está seguro de cómo hacerlo, consulte la sección de TIPS a continuación para conocer paso a paso cómo definir inputs para el evento workflow_dispatch.
-3. Confirmar los cambios y subir (push) el código en la rama main. Inspeccionar el resultado de la ejecución del workflow. ¿Qué valor se completó para la parámetro de debug?
-4. Ahora ejecute el workflow desde la interfaz de usuario y pruébelo con diferentes variaciones para la entrada de depuración. ¿Cómo afecta esto al resultado de las ejecuciones del flujo de trabajo?
+**Step 1: Show GitHub Context**
 
-### Uso de contexto 'env' en GitHub Actions. Tareas:
+Debe imprimir la siguiente información usando el contexto `github`:
 
-1. Añadir una nueva linea de clave al yaml, "env". Ésta se indica en el nivel superior, junto con 'name' y 'on'. Añada dos variables de entorno:
-   - MY_WORKFLOW_VAR, con el valor establecido en 'workflow'
-   - MY_OVERWRITTEN_VAR, con el valor establecido en 'workflow'
-2. En el job 'echo-data', agregue una clave env para definir dos variables de entorno a nivel de job:
-   - MY_JOB_VAR, con el valor establecido en 'job'
-   - MY_OVERWRITTEN_VAR, con el valor establecido en 'job'
-3. Añadir un paso adicional después del paso 'Retrieve Variable' con el nombre 'Print Env Variables'. Agregar una clave 'env' para definir una única variable de entorno MY_OVERWRITTEN_VAR, con el valor 'step', y además, que ejecute un script de varias líneas para imprimir la siguiente información en la pantalla:
-   - "Workflow env: <recupere el valor de la variable de entorno MY_WORKFLOW_VAR aquí>"
-   - "Overwritten env:: <recupere el valor de la variable de entorno MY_OVERWRITTEN_VAR aquí>"
-4. Añadir otro paso adicional después del paso 'Print Env Variables' con el nombre 'Print Env Variables by def'. que ejecute un script de varias líneas para imprimir la siguiente información en la pantalla ( sin definir ninguna variable de entorno adicional):
-    - "Workflow env: <recupere el valor de la variable de entorno MY_WORKFLOW_VAR aquí>"
-    - "Overwritten env:: <recupere el valor de la variable de entorno MY_OVERWRITTEN_VAR aquí>"
+    Event: <nombre del evento>
+    Ref: <referencia>
+    SHA: <sha del commit>
+    Actor: <actor>
+    Workflow: <nombre del workflow>
 
-5. Confirme los cambios y envíe el código. Tómese un tiempo para inspeccionar el resultado de la ejecución del flujo de trabajo. ¿Cómo se sobrescribieron las variables env con respecto al workflow, el job y los steps?
+**Step 2: Retrieve Variable**
 
+Debe imprimir el valor de una variable del repositorio llamada
+**MY_VAR**.
 
-### Preparación de repo para futuros usos. Tareas:
+------------------------------------------------------------------------
 
-1. Reducir la lista de desencadenadores para dejar solo workflow_dispatch, para evitar que este workflow se ejecute con cada push y ensucie la lista de ejecuciones de workflow.
+### 2. Crear una variable de repositorio
+
+Crear una variable llamada:
+
+    MY_VAR = hola mundo
+
+------------------------------------------------------------------------
+
+### 3. Ejecutar el workflow
+
+1.  Confirmar los cambios y hacer **push en main**.
+2.  Revisar la ejecución del workflow y la información mostrada.
+
+------------------------------------------------------------------------
+
+### 4. Ejecutar manualmente el workflow
+
+1.  Ir a **Actions** en GitHub.
+2.  Ejecutar el workflow manualmente usando **Run workflow**.
+3.  Probar con:
+    -   `debug = false`
+    -   `debug = true`
+
+Observar cómo cambia el **nombre de la ejecución del workflow**.
+
+------------------------------------------------------------------------
+
+### 5. Limpiar triggers
+
+Editar el workflow para dejar **solo**:
+
+    workflow_dispatch
+
+De esta forma el workflow solo se ejecutará manualmente.
+
 
 ## Tips
 - Para crear una variable de repositorio, siga estos pasos:
@@ -92,4 +109,3 @@ Trabajar con diferentes contextos disponibles durante las ejecuciones del flujo 
    env:
      MY_VAR: 'value'
    ```
-
