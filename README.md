@@ -8,4 +8,5 @@ Ejercicios:
  - [Environment Variables](./ejercicios/09-envVariables.md)
  - [Functions](./ejercicios/10-functions.md)
  - [Flow Control](./ejercicios/11-flowControl.md)
+ - [Filters & Activity Types](./ejercicios/05-06-eFilter&ActTypes.md)
 
