@@ -1,15 +1,6 @@
 name: 07 - Filters and Activity Types
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types:
-      - opened
-      - synchronize
-    branches:
-      - develop
   workflow_dispatch:
 
 jobs:
