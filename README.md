@@ -7,5 +7,8 @@ Ejercicios:
  - [Expressions](./ejercicios/08-expressions.md)
  - [Environment Variables](./ejercicios/09-envVariables.md)
  - [Functions](./ejercicios/10-functions.md)
+ - [Environments](./ejercicios/10-2-Environments.md)
  - [Flow Control](./ejercicios/11-flowControl.md)
+ - [Inputs](./ejercicios/12-Inputs.md)
+ - [Outputs](./ejercicios/13-Outputs.md)
 
