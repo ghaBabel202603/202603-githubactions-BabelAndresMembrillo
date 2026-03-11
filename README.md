@@ -15,5 +15,3 @@ Ejercicios:
  - [Outputs](./ejercicios/13-Outputs.md)
 
 Ot
-
-Test normal PR
