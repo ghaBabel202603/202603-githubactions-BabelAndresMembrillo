@@ -1,7 +1,6 @@
 name: 10 - Functions
 
 on:
-  pull_request:
   workflow_dispatch:
 
 jobs:
