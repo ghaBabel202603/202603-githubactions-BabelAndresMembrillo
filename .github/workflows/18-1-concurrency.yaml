@@ -1,0 +1,22 @@
+name: 18 - 1 - Managing Concurrency
+on:
+  workflow_dispatch:
+
+jobs:
+  slow-greet:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Greet
+        run: |
+          echo "Hello! This is a slow greeting."
+          sleep 30
+
+  slow-but-important-greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Important greet
+        run: |
+          echo "Hello! This is a slow but important greeting."
+          sleep 30

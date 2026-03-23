@@ -1,0 +1,41 @@
+name: 17 - 3 - Custom Actions - JS
+run-name: "17 - 3 - Custom Actions - JS | base: ${{ inputs.base-branch }} | target: ${{ inputs.target-branch }} | dir: ${{ inputs.working-directory }}"
+on:
+  workflow_dispatch:
+    inputs:
+      base-branch:
+        description: "The base branch"
+        type: string
+        default: "main"
+      target-branch:
+        description: "The target branch for the PR"
+        type: string
+        default: "update-dependencies"
+      working-directory:
+        description: "The working directory"
+        type: string
+        default: "17-custom-actions/react-app"
+      debug:
+        description: "Enable debug output"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependency-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for dependency updates
+        uses: ./.github/actions/js-dependency-update
+        with:
+          base-branch: ${{ inputs.base-branch }}
+          target-branch: ${{ inputs.target-branch }}
+          working-directory: ${{ inputs.working-directory }}
+          gh-token: ${{ secrets.GH_TOKEN }}
+          debug: ${{ inputs.debug }}

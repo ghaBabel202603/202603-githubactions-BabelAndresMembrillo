@@ -1,0 +1,30 @@
+name: 17 - 6 - Custom Actions - Docker
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Your name"
+        type: string
+        default: "World"
+
+jobs:
+  hello-to-you-docker:
+    runs-on: ubuntu-latest
+    outputs:
+      time: ${{ steps.hello.outputs.time }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Hello to You
+        id: hello
+        uses: ./.github/actions/hello-to-you-docker
+        with:
+          name: ${{ inputs.name }}
+
+  get-the-time:
+    runs-on: ubuntu-latest
+    needs: hello-to-you-docker
+    steps:
+      - name: Get the time
+        run: echo "The time was ${{ needs.hello-to-you-docker.outputs.time }}"

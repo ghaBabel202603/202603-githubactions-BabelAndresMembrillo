@@ -1,0 +1,16 @@
+name: "Hello to You Docker"
+description: "Prints a greeting message in a Docker container"
+
+inputs:
+  name:
+    description: "Your name"
+    required: true
+    default: "World"
+
+outputs:
+  time:
+    description: "The time we greeted you"
+
+runs:
+  using: docker
+  image: Dockerfile
